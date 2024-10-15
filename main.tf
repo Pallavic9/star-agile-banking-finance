@@ -23,7 +23,7 @@ resource "aws_security_group" "allow_ssh" {
 #resource "aws_key_pair" "generated_key" {
  # key_name   = "generated-key"
   #public_key = tls_private_key.my_key.public_key_openssh
-}#
+#}
 
 resource "aws_instance" "test-server" {
   ami = "ami-0e86e20dae9224db8"
