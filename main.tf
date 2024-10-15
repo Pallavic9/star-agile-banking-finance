@@ -50,4 +50,4 @@ resource "aws_instance" "test-server" {
      command = "ansible-playbook /var/lib/jenkins/workspace/finance-project/ansible-playbook.yml"
      }
   }
-}
+
