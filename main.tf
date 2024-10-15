@@ -1,6 +1,6 @@
 resource "aws_key_pair" "my_key" {
   key_name   = "my-key"
-  public_key = file("~/.ssh/id_rsa.pub")  # Make sure to provide the path to your public key file
+  public_key = file(".ssh/id_rsa.pub")  # Make sure to provide the path to your public key file
 }
 resource "aws_instance" "test-server" {
   ami = "ami-0e86e20dae9224db8"
