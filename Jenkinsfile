@@ -35,7 +35,18 @@ pipeline {
                sh 'docker push pallavic9/bankingproject:1.0'
                      }
                 }
-      
-    }
+         stage('Config & Deployment') {
+            steps {
+                withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'AwsAccessKey', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                    dir('terraform-files') {
+                    sh 'sudo chmod 600 keypair2.pem'
+                    sh 'terraform init'
+                    sh 'terraform validate'
+                    sh 'terraform apply --auto-approve'
+                        }
+                    }
+                }
+            }
+        }
 }
              
