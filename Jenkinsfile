@@ -1,29 +1,41 @@
 pipeline {
     agent any
-    stages{
-        stage('build project'){
-            steps{
-                git url:'https://github.com/Pallavic9/star-agile-banking-finance.git', branch: "master"
-                sh 'mvn clean package'
-              
-            }
+    stages {
+        stage('Git Checkout') {
+          steps {
+            echo 'This stage is to clone the repo from github'
+            git branch: 'master', url: 'https://github.com/Pallavic9/star-agile-banking-finance.git'
+                }
         }
-        stage('Build docker image'){
-            steps{
-                script{
-                    sh 'docker build -t pallavic9/staragileprojectfinance:v1 .'
-                    sh 'docker images'
+        stage('Create Package') {
+          steps {
+            echo 'This stage will compile, test, package my application'
+            sh 'mvn package'
                 }
             }
-        }
-         
-        
-     stage('Deploy') {
-            steps {
-                sh 'sudo docker run -itd --name My-first-containe21211 -p 8083:8081 pallavic9/staragileprojectfinance:v1'
-                  
-                }
+       stage('Generate Test Reports') {
+           steps {
+               publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '/var/lib/jenkins/workspace/Care-Health/target/surefire-reports', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+                    }
             }
-        
+       stage('Create Docker Image') {
+           steps {
+               sh 'docker build -t pallavic9/bankingproject:1.0 .'
+                    }
+                }
+       stage('Docker-Login') {
+           steps {
+               withCredentials([usernamePassword(credentialsId: 'Dockercreds', passwordVariable: 'dockerpassword', usernameVariable: 'dockerlogin')]) {
+               sh 'docker login -u ${dockerlogin} -p ${dockerpassword}'
+                                   }
+                        }
+                }
+       stage('Push-Image') {
+           steps {
+               sh 'docker push pallavic9/bankingproject:1.0'
+                     }
+                }
+      
     }
 }
+             
