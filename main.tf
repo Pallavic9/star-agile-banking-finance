@@ -28,7 +28,7 @@ resource "aws_security_group" "allow_ssh" {
 resource "aws_instance" "test-server" {
   ami = "ami-0e86e20dae9224db8"
   instance_type = "t2.micro"
-  key_name = "devops-key.pem"                          
+  key_name = "devops-key"                          
 
   provisioner "remote-exec" {
       connection {
