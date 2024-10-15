@@ -34,7 +34,7 @@ resource "aws_instance" "test-server" {
       connection {
       type        = "ssh"
       user        = "ubuntu"             # Use the default user for your AMI
-      private_key = tls_private_key.my_key.private_key_pem  # Path to the private key that matches the public key
+      private_key = tls_private_key.my_key.private_key_openssh  # Path to the private key that matches the public key
       host        = self.public_ip         # Use the instance’s public IP
     }
      inline = ["echo 'wait to start the instance' "]
