@@ -16,6 +16,12 @@ resource "aws_instance" "test-server" {
   key_name = aws_key_pair.key_pair.key_name
 
   provisioner "remote-exec" {
+      connection {
+      type        = "ssh"
+      user        = "ubuntu"             # Use the default user for your AMI
+      private_key = file("~/.ssh/id_rsa")  # Path to the private key that matches the public key
+      host        = self.public_ip         # Use the instance’s public IP
+    }
      inline = ["echo 'wait to start the instance' "]
   }
   tags = {
@@ -28,3 +34,20 @@ resource "aws_instance" "test-server" {
      command = "ansible-playbook /var/lib/jenkins/workspace/finance-project/ansibleplaybook.yml"
      }
   }
+resource "aws_security_group" "allow_ssh" {
+  name_prefix = "allow_ssh"
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
