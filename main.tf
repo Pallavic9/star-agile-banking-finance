@@ -1,15 +1,7 @@
-#Generate an SSH key pair
-resource "tls_private_key" "ec2_key_pair" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
-}
-
-# create key
-resource "aws_key_pair" "key_pair" {
+resource "aws_key_pair" "my_key" {
   key_name   = "my-key"
-  public_key = tls_private_key.ec2_key_pair.public_key_openssh
+  public_key = file("~/.ssh/id_rsa.pub")  # Make sure to provide the path to your public key file
 }
-
 resource "aws_instance" "test-server" {
   ami = "ami-0e86e20dae9224db8"
   instance_type = "t2.micro"
