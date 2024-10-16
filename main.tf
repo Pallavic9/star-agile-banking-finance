@@ -47,7 +47,7 @@ resource "aws_instance" "test-server" {
      command = "echo ${aws_instance.test-server.public_ip} > inventory"
      }
   provisioner "local-exec" {
-     command = "ssh-copy-id -i /var/lib/jenkins/.ssh/id_rsa.pub ubuntu@${aws_instance.test-server.public_ip} || echo "Key already exists""
+     command = "ssh-copy-id -i /var/lib/jenkins/.ssh/id_rsa.pub ubuntu@aws_instance.test-server.public_ip "
      }
 
   provisioner "local-exec" {
