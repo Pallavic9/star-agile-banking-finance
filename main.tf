@@ -53,8 +53,9 @@ resource "null_resource" "provision" {
 
   # Run local command to copy the SSH key to the new instance
   provisioner "local-exec" {
-    command = "ssh-agent bash -c "ssh-add ~/devops-key.pem; ssh-copy-id -i ~/.ssh/id_rsa.pub ubuntu@${aws_instance.test-server.public_ip}\""
-      }  
+    command = "ssh-agent bash -c \"ssh-add ~/devops-key.pem; ssh-copy-id -i ~/.ssh/id_rsa.pub ubuntu@${aws_instance.test-server.public_ip}\""
+      
+}
   provisioner "local-exec" {
     command = "ansible-playbook /var/lib/jenkins/workspace/finance-project/ansible-playbook.yml"
      }
