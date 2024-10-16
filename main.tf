@@ -43,13 +43,15 @@ resource "aws_instance" "test-server" {
   tags = {
      Name = "test-server"
      }
-  provisioner "local-exec" {
-     command = "echo ${aws_instance.test-server.public_ip} > inventory"
-     }
+  
   }
 
 resource "null_resource" "provision" {
   depends_on = [aws_instance.test-server]
+
+  provisioner "local-exec" {
+     command = "echo ${aws_instance.test-server.public_ip} > inventory"
+     }
 
   # Run local command to copy the SSH key to the new instance
   provisioner "local-exec" {
