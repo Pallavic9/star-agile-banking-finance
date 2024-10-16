@@ -47,7 +47,11 @@ resource "aws_instance" "test-server" {
      command = "echo ${aws_instance.test-server.public_ip} > inventory"
      }
   provisioner "local-exec" {
-     command = "ssh-copy-id -i /var/lib/jenkins/.ssh/id_rsa.pub ubuntu@${aws_instance.test-server.public_ip} "
+     command = "export ansi_host=${aws_instance.test-server.public_ip}"
+     }
+
+  provisioner "local-exec" {
+     command = "ssh-copy-id -i /var/lib/jenkins/.ssh/id_rsa.pub ubuntu@$ansi_host"
      }
 
   provisioner "local-exec" {
