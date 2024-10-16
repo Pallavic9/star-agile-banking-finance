@@ -46,17 +46,13 @@ resource "aws_instance" "test-server" {
   provisioner "local-exec" {
      command = "echo ${aws_instance.test-server.public_ip} > inventory"
      }
-  provisioner "local-exec" {
-     command = "export ansi_host=${aws_instance.test-server.public_ip}"
-     }
 
-  provisioner "local-exec" {
-     command = "ssh-copy-id -i /var/lib/jenkins/.ssh/id_rsa.pub ubuntu@$ansi_host"
-     }
+#  provisioner "local-exec" {
+ #    command = "ssh-copy-id -i /var/lib/jenkins/.ssh/id_rsa.pub ubuntu@$ansi_host"
+  #   }
 
-  provisioner "local-exec" {
-     command = "ansible-playbook /var/lib/jenkins/workspace/finance-project/ansible-playbook.yml"
-     }
-  depends_on = [aws_instance.test-server] 
+ # provisioner "local-exec" {
+ #    command = "ansible-playbook /var/lib/jenkins/workspace/finance-project/ansible-playbook.yml"
+  #   }
   }
 
